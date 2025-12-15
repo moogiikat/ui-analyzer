@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { HistoryItem } from "@/types/history";
 import { PROMPT_LEVELS } from "@/types/prompts";
+import { getConfidenceEmoji, getConfidenceColorClass } from "@/types/diff";
 import {
   getHistory,
   clearHistory,
@@ -84,17 +85,6 @@ export default function HistoryModal({
     onClose();
   };
 
-  const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 90) return "text-green-600";
-    if (confidence >= 70) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const getConfidenceEmoji = (confidence: number) => {
-    if (confidence >= 90) return "🎯";
-    if (confidence >= 70) return "⚠️";
-    return "❓";
-  };
 
   if (!isOpen) return null;
 
@@ -305,7 +295,7 @@ export default function HistoryModal({
                                 {getConfidenceEmoji(item.result.confidence)}
                               </span>
                               <span
-                                className={getConfidenceColor(
+                                className={getConfidenceColorClass(
                                   item.result.confidence
                                 )}
                               >
@@ -415,7 +405,7 @@ export default function HistoryModal({
                             信頼度:
                           </span>
                           <p
-                            className={getConfidenceColor(
+                            className={getConfidenceColorClass(
                               selectedItem.result.confidence
                             )}
                           >
