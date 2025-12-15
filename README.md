@@ -1,36 +1,386 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UI Analyzer
 
-## Getting Started
+AIを活用した画像差分分析ツール。2つの画像を比較し、Ollamaを使用して詳細な差分を分析します。
 
-First, run the development server:
+## 📋 目次
+
+- [概要](#概要)
+- [主な機能](#主な機能)
+- [技術スタック](#技術スタック)
+- [セットアップ](#セットアップ)
+- [使用方法](#使用方法)
+- [プロンプトレベル](#プロンプトレベル)
+- [API エンドポイント](#api-エンドポイント)
+- [開発](#開発)
+- [トラブルシューティング](#トラブルシューティング)
+
+## 概要
+
+UI Analyzerは、2つの画像（スクリーンショットやUIデザインなど）を比較し、AI（Ollama）を使用して詳細な差分を分析するWebアプリケーションです。UIデザインの変更点を素早く検出し、構造的な変更、色彩の変更、コンテンツの変更、レイアウトの変更などを包括的に分析します。
+
+## 主な機能
+
+### 🖼️ 画像比較分析
+- 2つの画像をアップロードして差分を分析
+- AIによる詳細な差分検出と説明
+- 5段階の分析レベル（基本〜マスター）
+
+### 📸 スクリーンショット機能
+- Playwrightを使用したWebページのスクリーンショット取得
+- 複数URLの並列スクリーンショット取得
+- スクリーンショットの一覧表示と選択
+
+### 📚 履歴管理
+- 分析結果の自動保存
+- 過去の分析結果の閲覧
+- 履歴からの画像と結果の復元
+
+### 🎨 モダンなUI
+- ダークテーマの美しいインターフェース
+- Framer Motionによるスムーズなアニメーション
+- レスポンシブデザイン対応
+
+## 技術スタック
+
+### フロントエンド
+- **Next.js 15.5.2** - Reactフレームワーク
+- **React 19.1.0** - UIライブラリ
+- **TypeScript 5** - 型安全性
+- **Tailwind CSS 4** - スタイリング
+- **Framer Motion 12.23.12** - アニメーション
+
+### バックエンド
+- **Next.js API Routes** - サーバーサイドAPI
+- **Ollama** - ローカルAIモデル（gemma3:12b）
+- **Playwright 1.55.0** - ブラウザ自動化・スクリーンショット取得
+
+### 開発ツール
+- **ESLint** - コード品質チェック
+- **Playwright Test** - E2Eテスト
+
+## セットアップ
+
+### 前提条件
+
+- Node.js 18以上
+- npm、yarn、pnpm、またはbun
+- Ollama（ローカルAIモデル実行環境）
+
+### 1. リポジトリのクローン
+
+```bash
+git clone <repository-url>
+cd ui-analyzer
+```
+
+### 2. 依存関係のインストール
+
+```bash
+npm install
+# または
+yarn install
+# または
+pnpm install
+# または
+bun install
+```
+
+### 3. Ollamaのセットアップ
+
+#### Ollamaのインストール
+
+**macOS:**
+```bash
+brew install ollama
+```
+
+**Linux:**
+```bash
+curl -fsSL https://ollama.ai/install.sh | sh
+```
+
+**Windows:**
+[Ollama公式サイト](https://ollama.ai/download)からダウンロード
+
+#### Ollamaサービスの起動
+
+```bash
+ollama serve
+```
+
+別のターミナルで、ビジョンモデルをインストール：
+
+```bash
+ollama pull gemma3:12b
+# または
+ollama pull llama3.2-vision
+# または
+ollama pull llava
+```
+
+#### セットアップスクリプトの実行（推奨）
+
+```bash
+chmod +x setup-ollama.sh
+./setup-ollama.sh
+```
+
+このスクリプトは以下を自動でチェック・設定します：
+- Ollamaのインストール確認
+- Ollamaサービスの起動確認
+- ビジョンモデルのインストール確認
+- API接続テスト
+
+### 4. 開発サーバーの起動
 
 ```bash
 npm run dev
-# or
+# または
 yarn dev
-# or
+# または
 pnpm dev
-# or
+# または
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ブラウザで [http://localhost:3000](http://localhost:3000) を開きます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 使用方法
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 基本的な使い方
 
-## Learn More
+1. **画像のアップロード**
+   - 「画像1（ベース）」と「画像2（比較対象）」に画像をアップロード
+   - ドラッグ&ドロップまたはクリックでファイル選択
 
-To learn more about Next.js, take a look at the following resources:
+2. **プロンプトレベルの選択**
+   - 分析の詳細度を選択（基本〜マスター）
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **分析の実行**
+   - 「分析する」ボタンをクリック
+   - AIが画像を分析し、結果を表示
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **結果の確認**
+   - 差分の概要、詳細な変更点、信頼度を確認
+   - 必要に応じて履歴に保存
 
-## Deploy on Vercel
+### スクリーンショット機能
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **スクリーンショットの取得**
+   - ナビゲーションバーの「スクリーンショット」をクリック
+   - URLを入力してスクリーンショットを取得
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **スクリーンショットの選択**
+   - 画像2のカードにある「スクリーンショットを選択」ボタンをクリック
+   - 保存済みのスクリーンショットから選択
+
+### 履歴機能
+
+1. **履歴の閲覧**
+   - ナビゲーションバーの「履歴」をクリック
+   - 過去の分析結果を一覧表示
+
+2. **履歴からの復元**
+   - 履歴アイテムをクリックして結果を復元
+   - 画像が保存されている場合は画像も復元
+
+## プロンプトレベル
+
+分析の詳細度を5段階から選択できます：
+
+### 🔍 基本分析（難易度: 1）
+- 基本的な違いを簡単に検出
+- 軽量で高速な分析
+- 初心者向け
+
+### 📊 標準分析（難易度: 2）
+- 詳細な違いを詳しく分析
+- 構造、色彩、コンテンツ、レイアウトの変更を検出
+- 一般的な用途に最適
+
+### 🔬 詳細分析（難易度: 3）
+- 専門的な視点で詳細分析
+- UI/UXデザインの観点を含む
+- アクセシビリティへの影響も分析
+
+### 🎯 エキスパート分析（難易度: 4）
+- プロフェッショナルレベルの高度分析
+- 技術的分析、品質評価、ビジネス影響分析
+- デザイナー・開発者向け
+
+### 🏆 マスター分析（難易度: 5）
+- 最高レベルの包括的分析
+- 深層技術分析、先端デザイン理論、ビジネス戦略分析
+- 最詳細な分析が必要な場合
+
+## API エンドポイント
+
+### POST `/api/diff-images`
+2つの画像を比較して差分を分析します。
+
+**リクエストボディ:**
+```json
+{
+  "image1": "data:image/png;base64,...",
+  "image2": "data:image/png;base64,...",
+  "promptLevel": "standard"
+}
+```
+
+**レスポンス:**
+```json
+{
+  "differences": ["主な違い1", "主な違い2"],
+  "summary": "2つの画像の違いの総合的な説明",
+  "confidence": 85,
+  "details": {
+    "structural_changes": ["構造変更1"],
+    "color_changes": ["色変更1"],
+    "content_changes": ["コンテンツ変更1"],
+    "layout_changes": ["レイアウト変更1"]
+  }
+}
+```
+
+### POST `/api/screenshots`
+URLからスクリーンショットを取得します。
+
+**リクエストボディ:**
+```json
+{
+  "urls": ["https://example.com"],
+  "options": {
+    "width": 1920,
+    "height": 1080,
+    "fullPage": true,
+    "delay": 1000,
+    "maxConcurrency": 3
+  }
+}
+```
+
+### GET `/api/screenshots/list`
+保存済みのスクリーンショット一覧を取得します。
+
+### GET `/api/screenshots/serve/[...path]`
+スクリーンショット画像を提供します。
+
+## 開発
+
+### プロジェクト構造
+
+```
+ui-analyzer/
+├── src/
+│   ├── app/              # Next.js App Router
+│   │   ├── api/          # API Routes
+│   │   └── page.tsx      # メインページ
+│   ├── components/        # Reactコンポーネント
+│   ├── hooks/            # カスタムフック
+│   ├── lib/              # ライブラリ・サービス
+│   ├── types/            # TypeScript型定義
+│   └── utils/            # ユーティリティ関数
+├── playwright/           # Playwright設定・スクリーンショット
+├── tests/                # テストファイル
+└── public/               # 静的ファイル
+```
+
+### ビルド
+
+```bash
+npm run build
+```
+
+### 本番環境での起動
+
+```bash
+npm run start
+```
+
+### リント
+
+```bash
+npm run lint
+```
+
+### テスト
+
+```bash
+npx playwright test
+```
+
+## トラブルシューティング
+
+### Ollamaに接続できない
+
+1. **Ollamaサービスが起動しているか確認**
+   ```bash
+   curl http://localhost:11434/api/tags
+   ```
+
+2. **Ollamaサービスを起動**
+   ```bash
+   ollama serve
+   ```
+
+3. **モデルがインストールされているか確認**
+   ```bash
+   ollama list
+   ```
+
+4. **モデルをインストール**
+   ```bash
+   ollama pull gemma3:12b
+   ```
+
+### スクリーンショットが取得できない
+
+1. **Playwrightのブラウザがインストールされているか確認**
+   ```bash
+   npx playwright install chromium
+   ```
+
+2. **URLが正しいか確認**
+   - `http://` または `https://` で始まる必要があります
+
+3. **タイムアウトエラーの場合**
+   - ネットワーク接続を確認
+   - ページの読み込み時間を延長（`delay`オプションを増やす）
+
+### 分析結果が正しく表示されない
+
+1. **画像形式を確認**
+   - PNG、JPEG、WebP形式をサポート
+
+2. **画像サイズを確認**
+   - 大きすぎる画像は処理に時間がかかる場合があります
+
+3. **ブラウザのコンソールでエラーを確認**
+   - 開発者ツール（F12）でエラーメッセージを確認
+
+### その他の問題
+
+- **ポート3000が使用中の場合**
+  ```bash
+  # 別のポートで起動
+  npm run dev -- -p 3001
+  ```
+
+- **依存関係のエラー**
+  ```bash
+  # node_modulesを削除して再インストール
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
+
+## ライセンス
+
+このプロジェクトはプライベートプロジェクトです。
+
+## 貢献
+
+プルリクエストやイシューの報告を歓迎します。大きな変更を行う場合は、事前にイシューを作成して変更内容を議論してください。
+
+---
+
+**注意**: このプロジェクトはOllamaをローカルで実行する必要があります。Ollamaが起動していない場合、分析機能は動作しません。
