@@ -147,7 +147,7 @@ export default function HistoryModal({
                     placeholder="履歴を検索..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white placeholder:text-gray-400"
                   />
                   <svg
                     className="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
@@ -169,7 +169,7 @@ export default function HistoryModal({
                   onChange={(e) =>
                     setSortBy(e.target.value as "date" | "confidence")
                   }
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
                 >
                   <option value="date">日付順</option>
                   <option value="confidence">信頼度順</option>
@@ -284,12 +284,12 @@ export default function HistoryModal({
                             </button>
                           </div>
 
-                          <p className="text-sm text-gray-600 truncate mb-1">
+                          <p className="text-sm text-gray-700 truncate mb-1">
                             {item.result.summary}
                           </p>
 
-                          <div className="flex items-center justify-between text-xs text-gray-500">
-                            <span>{formatDate(item.timestamp)}</span>
+                          <div className="flex items-center justify-between text-xs text-gray-600">
+                            <span className="text-gray-700">{formatDate(item.timestamp)}</span>
                             <div className="flex items-center space-x-1">
                               <span>
                                 {getConfidenceEmoji(item.result.confidence)}
@@ -378,16 +378,16 @@ export default function HistoryModal({
                     <div className="bg-gray-50 rounded-lg p-4 mb-4">
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <span className="font-medium text-gray-700">
+                          <span className="font-medium text-gray-800">
                             分析日時:
                           </span>
-                          <p>{formatDate(selectedItem.timestamp)}</p>
+                          <p className="text-gray-700">{formatDate(selectedItem.timestamp)}</p>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-700">
+                          <span className="font-medium text-gray-800">
                             分析レベル:
                           </span>
-                          <p>
+                          <p className="text-gray-700">
                             {
                               PROMPT_LEVELS.find(
                                 (l) => l.id === selectedItem.promptLevel
@@ -401,7 +401,7 @@ export default function HistoryModal({
                           </p>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-700">
+                          <span className="font-medium text-gray-800">
                             信頼度:
                           </span>
                           <p
@@ -414,10 +414,10 @@ export default function HistoryModal({
                           </p>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-700">
+                          <span className="font-medium text-gray-800">
                             差分数:
                           </span>
-                          <p>{selectedItem.result.differences.length}個</p>
+                          <p className="text-gray-700">{selectedItem.result.differences.length}個</p>
                         </div>
                       </div>
                     </div>
@@ -428,7 +428,7 @@ export default function HistoryModal({
                     <h4 className="font-semibold text-gray-800 mb-2">
                       🎯 総合サマリー
                     </h4>
-                    <p className="text-gray-700 text-sm bg-gray-50 rounded-lg p-3">
+                    <p className="text-gray-800 text-sm bg-gray-50 rounded-lg p-3">
                       {selectedItem.result.summary}
                     </p>
                   </div>
@@ -445,7 +445,7 @@ export default function HistoryModal({
                           className="flex items-start space-x-2 text-sm"
                         >
                           <span className="text-blue-500 mt-1">•</span>
-                          <span className="text-gray-700">{diff}</span>
+                          <span className="text-gray-800">{diff}</span>
                         </li>
                       ))}
                     </ul>
@@ -461,7 +461,7 @@ export default function HistoryModal({
                         <h5 className="font-medium text-blue-800 mb-1 text-sm">
                           🏗️ 構造変更
                         </h5>
-                        <ul className="text-xs text-blue-700 space-y-1">
+                        <ul className="text-xs text-blue-800 space-y-1">
                           {selectedItem.result.details.structural_changes.map(
                             (change, index) => (
                               <li key={index}>• {change}</li>
@@ -476,7 +476,7 @@ export default function HistoryModal({
                         <h5 className="font-medium text-purple-800 mb-1 text-sm">
                           🎨 色彩変更
                         </h5>
-                        <ul className="text-xs text-purple-700 space-y-1">
+                        <ul className="text-xs text-purple-800 space-y-1">
                           {selectedItem.result.details.color_changes.map(
                             (change, index) => (
                               <li key={index}>• {change}</li>
@@ -491,7 +491,7 @@ export default function HistoryModal({
                         <h5 className="font-medium text-green-800 mb-1 text-sm">
                           📝 コンテンツ変更
                         </h5>
-                        <ul className="text-xs text-green-700 space-y-1">
+                        <ul className="text-xs text-green-800 space-y-1">
                           {selectedItem.result.details.content_changes.map(
                             (change, index) => (
                               <li key={index}>• {change}</li>
@@ -506,7 +506,7 @@ export default function HistoryModal({
                         <h5 className="font-medium text-orange-800 mb-1 text-sm">
                           📐 レイアウト変更
                         </h5>
-                        <ul className="text-xs text-orange-700 space-y-1">
+                        <ul className="text-xs text-orange-800 space-y-1">
                           {selectedItem.result.details.layout_changes.map(
                             (change, index) => (
                               <li key={index}>• {change}</li>

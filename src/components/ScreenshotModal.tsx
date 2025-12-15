@@ -190,7 +190,7 @@ export default function ScreenshotModal({
                       value={url}
                       onChange={(e) => updateUrl(index, e.target.value)}
                       placeholder="https://example.com"
-                      className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-sm"
+                      className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-sm text-gray-900 bg-white"
                     />
 
                     <select
@@ -198,7 +198,7 @@ export default function ScreenshotModal({
                       onChange={(e) =>
                         e.target.value && setPresetUrl(index, e.target.value)
                       }
-                      className="px-4 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                      className="px-4 py-2.5 border border-gray-300 rounded-xl text-sm bg-white text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
                     >
                       <option value="">プリセット</option>
                       {presetUrls.map((preset) => (
@@ -291,7 +291,7 @@ export default function ScreenshotModal({
                           width: parseInt(e.target.value),
                         })
                       }
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-gray-900 bg-white"
                     />
                   </div>
 
@@ -308,7 +308,7 @@ export default function ScreenshotModal({
                           height: parseInt(e.target.value),
                         })
                       }
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-gray-900 bg-white"
                     />
                   </div>
 
@@ -325,7 +325,7 @@ export default function ScreenshotModal({
                           delay: parseInt(e.target.value),
                         })
                       }
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-gray-900 bg-white"
                     />
                   </div>
 
@@ -344,7 +344,7 @@ export default function ScreenshotModal({
                           maxConcurrency: parseInt(e.target.value),
                         })
                       }
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-gray-900 bg-white"
                     />
                   </div>
                 </div>
