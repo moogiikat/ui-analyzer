@@ -122,12 +122,6 @@ export default function ImageDiffChecker() {
     }
   };
 
-  const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 90) return "text-green-600";
-    if (confidence >= 70) return "text-yellow-600";
-    return "text-red-600";
-  };
-
   const getConfidenceEmoji = (confidence: number) => {
     if (confidence >= 90) return "🎯";
     if (confidence >= 70) return "⚠️";
@@ -196,53 +190,67 @@ export default function ImageDiffChecker() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-purple-50 to-blue-100 p-6">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex-1">
-              <img src="/logo.png" alt="Logo" className="h-24" />
+    <div className="min-h-screen bg-[#0a0e27] text-white">
+      {/* Top Navigation Bar */}
+      <nav className="border-b border-cyan-500/20 bg-[#0f1429] backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-emerald-400 rounded-lg flex items-center justify-center text-xl font-bold shadow-lg shadow-cyan-500/30">
+                ⚡
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+                  画像差分チェッカー
+                </h1>
+                <p className="text-xs text-gray-400">AIによる視覚比較</p>
+              </div>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              🔍 画像差分チェッカー
-            </h1>
-            <div className="flex-1 flex justify-end space-x-2">
+            <div className="flex items-center space-x-3">
               <button
                 onClick={() => setShowSSModal(true)}
-                className="px-4 py-2 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all shadow-lg border border-gray-200 flex items-center space-x-2"
+                className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg hover:bg-cyan-500/20 transition-all text-cyan-300 flex items-center space-x-2 backdrop-blur-sm"
               >
-                <span className="text-lg">📸</span>
-                <span className="hidden sm:inline">SS</span>
+                <span>📸</span>
+                <span className="hidden sm:inline">スクリーンショット</span>
               </button>
               <button
                 onClick={() => setShowHistoryModal(true)}
-                className="px-4 py-2 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all shadow-lg border border-gray-200 flex items-center space-x-2"
+                className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg hover:bg-emerald-500/20 transition-all text-emerald-300 flex items-center space-x-2 backdrop-blur-sm"
               >
-                <span className="text-lg">📚</span>
+                <span>📚</span>
                 <span className="hidden sm:inline">履歴</span>
               </button>
             </div>
           </div>
-          <p className="text-gray-600 text-lg">
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <p className="text-gray-400 text-sm">
             Ollamaを使用して2つの画像の違いをAIが詳細に分析します
           </p>
         </motion.div>
 
         {/* Image Upload Section */}
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Image 1 Upload */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-xl p-6"
+            className="bg-[#151b3d] border border-cyan-500/20 rounded-xl p-6 backdrop-blur-xl"
           >
-            <h3 className="text-xl font-bold text-gray-800 mb-4">
-              📷 画像1 (ベース)
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-cyan-300 flex items-center space-x-2">
+                <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                <span>画像1 (ベース)</span>
+              </h3>
+            </div>
             <input
               type="file"
               accept="image/*"
@@ -254,21 +262,24 @@ export default function ImageDiffChecker() {
             {!image1 ? (
               <div
                 onClick={() => fileInput1Ref.current?.click()}
-                className="border-2 border-dashed border-blue-300 rounded-xl p-8 cursor-pointer hover:border-blue-500 transition-colors text-center"
+                className="border-2 border-dashed border-cyan-500/30 rounded-lg p-12 cursor-pointer hover:border-cyan-500/60 transition-all text-center bg-cyan-500/5 hover:bg-cyan-500/10"
               >
-                <div className="text-4xl mb-4">📸</div>
-                <p className="text-gray-600">クリックして画像1をアップロード</p>
+                <div className="text-5xl mb-4 opacity-60">📷</div>
+                <p className="text-gray-400 text-sm">クリックして画像1をアップロード</p>
+                <p className="text-gray-500 text-xs mt-2">PNG、JPG、WEBP形式に対応</p>
               </div>
             ) : (
               <div className="space-y-4">
-                <img
-                  src={image1}
-                  alt="Image 1"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
+                <div className="relative rounded-lg overflow-hidden border border-cyan-500/20">
+                  <img
+                    src={image1}
+                    alt="Image 1"
+                    className="w-full h-64 object-contain bg-[#0a0e27]"
+                  />
+                </div>
                 <button
                   onClick={() => fileInput1Ref.current?.click()}
-                  className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 rounded-lg hover:bg-cyan-500/30 transition-all font-medium text-sm"
                 >
                   画像1を変更
                 </button>
@@ -278,23 +289,22 @@ export default function ImageDiffChecker() {
 
           {/* Image 2 Upload */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-xl p-6"
+            className="bg-[#151b3d] border border-emerald-500/20 rounded-xl p-6 backdrop-blur-xl"
           >
-            <div className="flex gap-2">
-              <h3 className="text-xl font-bold text-gray-800">
-                📷 画像2 (比較対象)
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-emerald-300 flex items-center space-x-2">
+                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                <span>画像2 (比較対象)</span>
               </h3>
-              <div className="mb-4">
-                <button
-                  onClick={() => setShowSelectorModal(true)}
-                  className="px-4 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all shadow-lg border border-gray-200 flex items-center space-x-2"
-                >
-                  <span className="text-lg">📂</span>
-                  <span className="hidden sm:inline">選択</span>
-                </button>
-              </div>
+              <button
+                onClick={() => setShowSelectorModal(true)}
+                className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg hover:bg-emerald-500/20 transition-all text-emerald-300 text-xs flex items-center space-x-1"
+              >
+                <span>📂</span>
+                <span className="hidden sm:inline">選択</span>
+              </button>
             </div>
             <input
               type="file"
@@ -307,21 +317,24 @@ export default function ImageDiffChecker() {
             {!image2 ? (
               <div
                 onClick={() => fileInput2Ref.current?.click()}
-                className="border-2 border-dashed border-purple-300 rounded-xl p-8 cursor-pointer hover:border-purple-500 transition-colors text-center"
+                className="border-2 border-dashed border-emerald-500/30 rounded-lg p-12 cursor-pointer hover:border-emerald-500/60 transition-all text-center bg-emerald-500/5 hover:bg-emerald-500/10"
               >
-                <div className="text-4xl mb-4">📸</div>
-                <p className="text-gray-600">クリックして画像2をアップロード</p>
+                <div className="text-5xl mb-4 opacity-60">📷</div>
+                <p className="text-gray-400 text-sm">クリックして画像2をアップロード</p>
+                <p className="text-gray-500 text-xs mt-2">PNG、JPG、WEBP形式に対応</p>
               </div>
             ) : (
               <div className="space-y-4">
-                <img
-                  src={image2}
-                  alt="Image 2"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
+                <div className="relative rounded-lg overflow-hidden border border-emerald-500/20">
+                  <img
+                    src={image2}
+                    alt="Image 2"
+                    className="w-full h-64 object-contain bg-[#0a0e27]"
+                  />
+                </div>
                 <button
                   onClick={() => fileInput2Ref.current?.click()}
-                  className="w-full px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 rounded-lg hover:bg-emerald-500/30 transition-all font-medium text-sm"
                 >
                   画像2を変更
                 </button>
@@ -334,102 +347,98 @@ export default function ImageDiffChecker() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+          className="bg-[#151b3d] border border-purple-500/20 rounded-xl p-6 mb-8 backdrop-blur-xl"
         >
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            🎯 分析レベルを選択
-          </h3>
-          <p className="text-gray-600 mb-6">
-            分析の詳細度を選択してください。レベルが高いほど詳細で専門的な分析を行います。
-          </p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            {PROMPT_LEVELS.map((level: PromptLevel) => (
-              <motion.div
-                key={level.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`
-                  cursor-pointer rounded-xl p-4 border-2 transition-all duration-200
-                  ${
-                    selectedPromptLevel === level.id
-                      ? "border-blue-500 bg-blue-50 shadow-lg"
-                      : "border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100"
-                  }
-                `}
-                onClick={() => setSelectedPromptLevel(level.id)}
-              >
-                <div className="text-center">
-                  <div className="text-3xl mb-2">{level.emoji}</div>
-                  <h4
-                    className={`font-bold mb-1 ${
-                      selectedPromptLevel === level.id
-                        ? "text-blue-700"
-                        : "text-gray-800"
-                    }`}
-                  >
-                    {level.name}
-                  </h4>
-                  <div className="flex justify-center items-center mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <span
-                        key={i}
-                        className={`text-sm ${
-                          i < level.difficulty
-                            ? selectedPromptLevel === level.id
-                              ? "text-blue-500"
-                              : "text-yellow-500"
-                            : "text-gray-300"
-                        }`}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                  <p
-                    className={`text-sm ${
-                      selectedPromptLevel === level.id
-                        ? "text-blue-600"
-                        : "text-gray-600"
-                    }`}
-                  >
-                    {level.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-1 h-8 bg-gradient-to-b from-purple-400 to-cyan-400 rounded-full"></div>
+            <div>
+              <h3 className="text-xl font-bold text-white mb-1">
+                分析レベル
+              </h3>
+              <p className="text-gray-400 text-sm">
+                分析の詳細度を選択してください。レベルが高いほど詳細で専門的な分析を行います。
+              </p>
+            </div>
           </div>
 
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <div className="flex items-start space-x-3">
-              <span className="text-blue-500 text-xl mt-1">
-                {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.emoji}
-              </span>
-              <div>
-                <h4 className="font-semibold text-blue-800 mb-1">
-                  選択中:{" "}
-                  {
-                    PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)
-                      ?.name
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+            {PROMPT_LEVELS.map((level: PromptLevel) => (
+              <motion.button
+                key={level.id}
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setSelectedPromptLevel(level.id)}
+                className={`
+                  cursor-pointer rounded-lg p-4 border transition-all duration-200 text-left
+                  ${
+                    selectedPromptLevel === level.id
+                      ? "border-purple-500 bg-purple-500/20 shadow-lg shadow-purple-500/20"
+                      : "border-gray-700 bg-[#0f1429] hover:border-gray-600 hover:bg-[#1a2342]"
                   }
+                `}
+              >
+                <div className="text-2xl mb-2">{level.emoji}</div>
+                <h4
+                  className={`font-semibold mb-2 text-sm ${
+                    selectedPromptLevel === level.id
+                      ? "text-purple-300"
+                      : "text-gray-300"
+                  }`}
+                >
+                  {level.name}
                 </h4>
-                <p className="text-blue-700 text-sm">
-                  {
-                    PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)
-                      ?.description
-                  }
-                </p>
-                <div className="flex items-center mt-2">
-                  <span className="text-sm text-blue-600 mr-2">難易度:</span>
+                <div className="flex items-center mb-2">
                   {[...Array(5)].map((_, i) => (
                     <span
                       key={i}
-                      className={`text-sm ${
+                      className={`text-xs ${
+                        i < level.difficulty
+                          ? selectedPromptLevel === level.id
+                            ? "text-purple-400"
+                            : "text-yellow-400"
+                          : "text-gray-600"
+                      }`}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <p
+                  className={`text-xs leading-tight ${
+                    selectedPromptLevel === level.id
+                      ? "text-purple-200"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {level.description}
+                </p>
+              </motion.button>
+            ))}
+          </div>
+
+          <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+            <div className="flex items-start space-x-3">
+              <span className="text-2xl">
+                {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.emoji}
+              </span>
+              <div className="flex-1">
+                <h4 className="font-semibold text-purple-300 mb-1 text-sm">
+                  選択中: {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.name}
+                </h4>
+                <p className="text-purple-200/80 text-xs mb-2">
+                  {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.description}
+                </p>
+                <div className="flex items-center">
+                  <span className="text-xs text-purple-300/70 mr-2">難易度:</span>
+                  {[...Array(5)].map((_, i) => (
+                    <span
+                      key={i}
+                      className={`text-xs ${
                         i <
                         (PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)
                           ?.difficulty || 0)
-                          ? "text-blue-500"
-                          : "text-gray-300"
+                          ? "text-purple-400"
+                          : "text-gray-600"
                       }`}
                     >
                       ★
@@ -451,17 +460,34 @@ export default function ImageDiffChecker() {
             <button
               onClick={analyzeDifferences}
               disabled={analyzing}
-              className="px-12 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg font-semibold shadow-lg"
+              className="group relative px-12 py-4 bg-gradient-to-r from-cyan-500 via-purple-500 to-emerald-500 text-white rounded-xl hover:shadow-2xl hover:shadow-cyan-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg font-semibold overflow-hidden"
             >
-              {analyzing
-                ? "分析中..."
-                : `${
-                    PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)
-                      ?.emoji
-                  } ${
-                    PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)
-                      ?.name
-                  }で分析する`}
+              <span className="relative z-10 flex items-center space-x-2">
+                {analyzing ? (
+                  <>
+                    <motion.span
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                      ⚡
+                    </motion.span>
+                    <span>分析中...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.emoji}
+                    </span>
+                    <span>
+                      {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.name}で分析する
+                    </span>
+                  </>
+                )}
+              </span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-purple-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                initial={false}
+              />
             </button>
           </motion.div>
         )}
@@ -470,42 +496,45 @@ export default function ImageDiffChecker() {
         <AnimatePresence>
           {analyzing && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-2xl shadow-xl p-8 mb-8 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-[#151b3d] border border-cyan-500/30 rounded-xl p-12 mb-8 text-center backdrop-blur-xl"
             >
-              <div className="flex justify-center mb-4">
+              <div className="flex flex-col items-center">
                 <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="text-6xl"
+                  animate={{ 
+                    rotate: 360,
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ 
+                    rotate: { duration: 2, repeat: Infinity, ease: "linear" },
+                    scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                  className="text-7xl mb-6"
                 >
-                  🔍
+                  ⚡
                 </motion.div>
-              </div>
-              <p className="text-lg font-semibold text-gray-700 mb-2">
-                {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.emoji}{" "}
-                {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.name}
-                で分析中...
-              </p>
-              <p className="text-gray-500">
-                AI技術で2つの画像の違いを詳細に検出しています
-              </p>
-              <div className="mt-4 flex justify-center">
-                <div className="flex space-x-1">
+                <h3 className="text-xl font-bold text-cyan-300 mb-2">
+                  {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.emoji}{" "}
+                  {PROMPT_LEVELS.find((l) => l.id === selectedPromptLevel)?.name}で分析中...
+                </h3>
+                <p className="text-gray-400 mb-6 text-sm">
+                  AI技術で2つの画像の違いを詳細に検出しています
+                </p>
+                <div className="flex space-x-2">
                   {[0, 1, 2, 3, 4].map((i) => (
                     <motion.div
                       key={i}
-                      className="w-3 h-3 bg-blue-500 rounded-full"
+                      className="w-2 h-2 bg-cyan-400 rounded-full"
                       animate={{
                         scale: [1, 1.5, 1],
-                        opacity: [0.5, 1, 0.5],
+                        opacity: [0.4, 1, 0.4],
                       }}
                       transition={{
-                        duration: 1.5,
+                        duration: 1.2,
                         repeat: Infinity,
-                        delay: i * 0.2,
+                        delay: i * 0.15,
                       }}
                     />
                   ))}
@@ -519,18 +548,23 @@ export default function ImageDiffChecker() {
         <AnimatePresence>
           {result && (
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
             >
               {/* Summary Card */}
-              <div className="bg-white rounded-2xl shadow-xl p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    📊 分析結果
-                  </h2>
+              <div className="bg-[#151b3d] border border-cyan-500/20 rounded-xl p-8 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-6 pb-6 border-b border-cyan-500/10">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-emerald-400 rounded-lg flex items-center justify-center text-xl">
+                      📊
+                    </div>
+                    <h2 className="text-2xl font-bold text-white">
+                      分析結果
+                    </h2>
+                  </div>
                   <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-2 bg-blue-50 px-3 py-1 rounded-lg">
+                    <div className="flex items-center space-x-2 bg-purple-500/20 border border-purple-500/30 px-3 py-1.5 rounded-lg">
                       <span className="text-lg">
                         {
                           PROMPT_LEVELS.find(
@@ -538,7 +572,7 @@ export default function ImageDiffChecker() {
                           )?.emoji
                         }
                       </span>
-                      <span className="text-sm font-medium text-blue-700">
+                      <span className="text-sm font-medium text-purple-300">
                         {
                           PROMPT_LEVELS.find(
                             (l) => l.id === selectedPromptLevel
@@ -546,45 +580,55 @@ export default function ImageDiffChecker() {
                         }
                       </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-2xl">
+                    <div className="flex items-center space-x-2 bg-cyan-500/20 border border-cyan-500/30 px-4 py-1.5 rounded-lg">
+                      <span className="text-xl">
                         {getConfidenceEmoji(result.confidence)}
                       </span>
                       <span
-                        className={`text-xl font-bold ${getConfidenceColor(
-                          result.confidence
-                        )}`}
+                        className={`text-lg font-bold ${
+                          result.confidence >= 90
+                            ? "text-emerald-400"
+                            : result.confidence >= 70
+                            ? "text-yellow-400"
+                            : "text-red-400"
+                        }`}
                       >
-                        信頼度: {result.confidence}%
+                        {result.confidence}%
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-6 mb-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    🎯 総合サマリー
-                  </h3>
-                  <p className="text-gray-700">{result.summary}</p>
+                <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-lg p-6 mb-6">
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl">🎯</span>
+                    <div>
+                      <h3 className="font-semibold text-cyan-300 mb-2 text-sm uppercase tracking-wide">
+                        総合サマリー
+                      </h3>
+                      <p className="text-gray-300 leading-relaxed">{result.summary}</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Main Differences */}
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-800 mb-3">
-                      🔍 主な違い
+                  <div className="bg-[#0f1429] border border-gray-700 rounded-lg p-6">
+                    <h3 className="text-lg font-bold text-white mb-4 flex items-center space-x-2">
+                      <span className="w-1 h-6 bg-cyan-400 rounded-full"></span>
+                      <span>主な違い</span>
                     </h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                       {result.differences.map((diff, index) => (
                         <motion.li
                           key={index}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.1 * index }}
-                          className="flex items-start space-x-2"
+                          className="flex items-start space-x-3"
                         >
-                          <span className="text-blue-500 mt-1">•</span>
-                          <span className="text-gray-700">{diff}</span>
+                          <span className="text-cyan-400 mt-1.5 text-sm">▸</span>
+                          <span className="text-gray-300 text-sm leading-relaxed">{diff}</span>
                         </motion.li>
                       ))}
                     </ul>
@@ -592,19 +636,24 @@ export default function ImageDiffChecker() {
 
                   {/* Detailed Analysis */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-bold text-gray-800 mb-3">
-                      📝 詳細分析
+                    <h3 className="text-lg font-bold text-white mb-4 flex items-center space-x-2">
+                      <span className="w-1 h-6 bg-purple-400 rounded-full"></span>
+                      <span>詳細分析</span>
                     </h3>
 
                     {result.details.structural_changes.length > 0 && (
-                      <div className="bg-blue-50 rounded-lg p-4">
-                        <h4 className="font-semibold text-blue-800 mb-2">
-                          🏗️ 構造変更
+                      <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
+                        <h4 className="font-semibold text-cyan-300 mb-2 text-sm flex items-center space-x-2">
+                          <span>🏗️</span>
+                          <span>構造変更</span>
                         </h4>
-                        <ul className="text-sm text-blue-700 space-y-1">
+                        <ul className="text-xs text-cyan-200/80 space-y-1.5">
                           {result.details.structural_changes.map(
                             (change, index) => (
-                              <li key={index}>• {change}</li>
+                              <li key={index} className="flex items-start space-x-2">
+                                <span className="mt-1">•</span>
+                                <span>{change}</span>
+                              </li>
                             )
                           )}
                         </ul>
@@ -612,27 +661,35 @@ export default function ImageDiffChecker() {
                     )}
 
                     {result.details.color_changes.length > 0 && (
-                      <div className="bg-purple-50 rounded-lg p-4">
-                        <h4 className="font-semibold text-purple-800 mb-2">
-                          🎨 色彩変更
+                      <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+                        <h4 className="font-semibold text-purple-300 mb-2 text-sm flex items-center space-x-2">
+                          <span>🎨</span>
+                          <span>色彩変更</span>
                         </h4>
-                        <ul className="text-sm text-purple-700 space-y-1">
+                        <ul className="text-xs text-purple-200/80 space-y-1.5">
                           {result.details.color_changes.map((change, index) => (
-                            <li key={index}>• {change}</li>
+                            <li key={index} className="flex items-start space-x-2">
+                              <span className="mt-1">•</span>
+                              <span>{change}</span>
+                            </li>
                           ))}
                         </ul>
                       </div>
                     )}
 
                     {result.details.content_changes.length > 0 && (
-                      <div className="bg-green-50 rounded-lg p-4">
-                        <h4 className="font-semibold text-green-800 mb-2">
-                          📝 コンテンツ変更
+                      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4">
+                        <h4 className="font-semibold text-emerald-300 mb-2 text-sm flex items-center space-x-2">
+                          <span>📝</span>
+                          <span>コンテンツ変更</span>
                         </h4>
-                        <ul className="text-sm text-green-700 space-y-1">
+                        <ul className="text-xs text-emerald-200/80 space-y-1.5">
                           {result.details.content_changes.map(
                             (change, index) => (
-                              <li key={index}>• {change}</li>
+                              <li key={index} className="flex items-start space-x-2">
+                                <span className="mt-1">•</span>
+                                <span>{change}</span>
+                              </li>
                             )
                           )}
                         </ul>
@@ -640,14 +697,18 @@ export default function ImageDiffChecker() {
                     )}
 
                     {result.details.layout_changes.length > 0 && (
-                      <div className="bg-orange-50 rounded-lg p-4">
-                        <h4 className="font-semibold text-orange-800 mb-2">
-                          📐 レイアウト変更
+                      <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+                        <h4 className="font-semibold text-orange-300 mb-2 text-sm flex items-center space-x-2">
+                          <span>📐</span>
+                          <span>レイアウト変更</span>
                         </h4>
-                        <ul className="text-sm text-orange-700 space-y-1">
+                        <ul className="text-xs text-orange-200/80 space-y-1.5">
                           {result.details.layout_changes.map(
                             (change, index) => (
-                              <li key={index}>• {change}</li>
+                              <li key={index} className="flex items-start space-x-2">
+                                <span className="mt-1">•</span>
+                                <span>{change}</span>
+                              </li>
                             )
                           )}
                         </ul>
@@ -666,7 +727,7 @@ export default function ImageDiffChecker() {
                     setResult(null);
                     setSelectedPromptLevel("standard");
                   }}
-                  className="px-8 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all font-semibold"
+                  className="px-8 py-3 bg-gray-700/50 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700/70 hover:border-gray-500 transition-all font-semibold text-sm"
                 >
                   🔄 新しい画像で分析
                 </button>
@@ -680,7 +741,7 @@ export default function ImageDiffChecker() {
                     a.download = "image-diff-analysis.json";
                     a.click();
                   }}
-                  className="px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-xl hover:from-green-600 hover:to-blue-600 transition-all font-semibold"
+                  className="px-8 py-3 bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 border border-cyan-500/40 text-cyan-300 rounded-lg hover:from-cyan-500/30 hover:to-emerald-500/30 transition-all font-semibold text-sm"
                 >
                   💾 結果をダウンロード
                 </button>
